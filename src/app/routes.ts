@@ -8,6 +8,7 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { Profile } from "./pages/Profile";
 import { PDFReport } from "./pages/PDFReport";
 import { Confidence } from "./pages/Confidence";
+import { Voice } from "./pages/Voice";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "profile", Component: Profile },
       { path: "pdf-report", Component: PDFReport },
       { path: "confidence", Component: Confidence },
+      { path: "voice", Component: Voice },
     ],
   },
 ]);
