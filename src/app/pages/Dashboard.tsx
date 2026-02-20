@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Search, Filter, Sparkles, TrendingUp, Leaf, ArrowRight, Star } from "lucide-react";
+import { Search, Filter, Sparkles, TrendingUp, Leaf, ArrowRight, Star, Heart } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { NavLink } from "react-router";
 
