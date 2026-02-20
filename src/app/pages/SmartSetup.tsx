@@ -1,6 +1,5 @@
-import React from 'react'
-import { SmartSetupBuilder } from '@/app/components/SmartSetupBuilder'
-import { SetupBuilderResult } from '@/services/setupBuilder'
+import { SmartSetupBuilder } from '../components/SmartSetupBuilder'
+import { SetupBuilderResult } from '../../services/setupBuilder'
 
 /**
  * Smart Setup Builder Demo Page
@@ -19,8 +18,8 @@ export default function SmartSetupPage() {
     console.log('Setup built:', result)
 
     // Track event for analytics
-    if (window.gtag) {
-      window.gtag('event', 'setup_generated', {
+    if ((window as any).gtag) {
+      (window as any).gtag('event', 'setup_generated', {
         product_count: result.products.length,
         total_cost: result.totalCost,
         budget: result.totalCost + result.remainingBudget,

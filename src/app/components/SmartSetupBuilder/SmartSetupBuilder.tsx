@@ -7,15 +7,15 @@ import { NumericTextBox } from '@progress/kendo-react-inputs'
 import { Button } from '@progress/kendo-react-buttons'
 import { Loader } from '@progress/kendo-react-indicators'
 import { Card, CardBody } from '@progress/kendo-react-layout'
-import { ChartContainer, Chart, SeriesItem, TooltipItem } from '@progress/kendo-react-charts'
+import { ChartSeriesItem, Chart, ChartSeries, ChartTooltip } from '@progress/kendo-react-charts'
 
-import { fetchCategories, SanityCategory, SanityProduct } from '@/services/sanity/sanityService'
+import { fetchCategories, SanityCategory, SanityProduct } from '../../../services/sanity/sanityService'
 import {
   buildSmartSetup,
   getCompatibleAccessories,
   getUpgradeSuggestions,
   SetupBuilderResult,
-} from '@/services/setupBuilder'
+} from '../../../services/setupBuilder'
 import ProductCard from './ProductCard'
 import ReplacementSuggestions from './ReplacementSuggestions'
 import CompatibleAccessories from './CompatibleAccessories'
@@ -304,17 +304,17 @@ const SmartSetupBuilder: React.FC<SmartSetupBuilderProps> = ({ onSetupBuilt }) =
             <Card>
               <CardBody>
                 <h3 className="font-semibold mb-4">Price Distribution</h3>
-                <ChartContainer>
+                <ChartSeries>
                   <Chart>
-                    <SeriesItem
+                    <ChartSeriesItem
                       type="bar"
                       data={priceDistribution}
                       field="price"
                       categoryField="category"
                     />
-                    <TooltipItem format="$#,##0.00" />
+                    <ChartTooltip format="$#,##0.00" />
                   </Chart>
-                </ChartContainer>
+                </ChartSeries>
               </CardBody>
             </Card>
           )}
