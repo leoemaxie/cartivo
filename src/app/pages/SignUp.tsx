@@ -254,6 +254,7 @@ export function SignUp() {
                 I agree to the{' '}
                 <button
                   type="button"
+                  onClick={() => navigate('/terms')}
                   className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
                 >
                   Terms of Service
@@ -261,6 +262,7 @@ export function SignUp() {
                 and{' '}
                 <button
                   type="button"
+                  onClick={() => navigate('/privacy')}
                   className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
                 >
                   Privacy Policy

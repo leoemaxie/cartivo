@@ -119,13 +119,15 @@ export default function PDFReportForm({ categories, loading, onSubmit }: PDFRepo
         </label>
         <MultiSelect
           data={STYLE_OPTIONS}
-          // value={stylePreferences}
+          value={stylePreferences}
           textField="text"
           dataItemKey="value"
           onChange={(e: MultiSelectChangeEvent) => setStylePreferences(e.value as string[])}
           placeholder="Select styles…"
-          className="h-12 w-12"
+          className="w-full"
+          popupSettings={{ popupClass: 'w-full' }}
         />
+        <p className="text-xs text-slate-400">Choose one or more styles for your report</p>
       </div>
 
       {/* Sustainability */}
