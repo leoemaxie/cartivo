@@ -7,7 +7,7 @@
     "build": "vite build",
     "dev": "NODE_ENV=development concurrently \"vite\" \"tsx --tsconfig tsconfig.server.json server/index.ts\"",
     "start": "NODE_ENV=production node dist-server/index.js",
-    "build:server": "esbuild server/index.ts --bundle --platform=node --outdir=dist-server --format=esm --packages=external --alias:@shared/schema=../shared/schema --alias:@shared/models/auth=../shared/models/auth",
+    "build:server": "esbuild server/index.ts --bundle --platform=node --outdir=dist-server --format=esm --packages=external --alias:@shared/schema=./shared/schema --alias:@shared/models/auth=./shared/models/auth",
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
