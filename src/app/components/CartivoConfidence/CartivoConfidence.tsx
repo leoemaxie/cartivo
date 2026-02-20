@@ -266,12 +266,14 @@ export function CartivoConfidence({ setupResult, products: propProducts, maxBudg
       const { visualFitScore, visualInsight, confidenceBand } = computeVisualFitScore(tryOnResult)
 
       // 3. Compatibility score from setup builder data (or defaults)
-      const avgRating =
-        setupResult?.products.reduce((s, p) => s + (p.performanceMetrics?.averageRating ?? 3), 0) /
-          (setupResult?.products.length || 1) ?? 3
-      const avgDurability =
-        setupResult?.products.reduce((s, p) => s + (p.performanceMetrics?.durabilityScore ?? 50), 0) /
-          (setupResult?.products.length || 1) ?? 50
+      const avgRating = setupResult?.products.length
+        ? setupResult.products.reduce((s, p) => s + (p.performanceMetrics?.averageRating ?? 3), 0) /
+          setupResult.products.length
+        : 3
+      const avgDurability = setupResult?.products.length
+        ? setupResult.products.reduce((s, p) => s + (p.performanceMetrics?.durabilityScore ?? 50), 0) /
+          setupResult.products.length
+        : 50
 
       const compatibilityScore = deriveCompatibilityScore(
         setupResult?.isCompactible ?? true,
