@@ -6,6 +6,7 @@ import { Chat } from "./pages/Chat";
 import { ARView } from "./pages/ARView";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Profile } from "./pages/Profile";
+import { Confidence } from "./pages/Confidence";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "ar/:id", Component: ARView },
       { path: "product/:id", Component: ProductDetail },
       { path: "profile", Component: Profile },
+      { path: "confidence", Component: Confidence },
     ],
   },
 ]);
