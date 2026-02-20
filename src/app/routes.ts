@@ -16,6 +16,7 @@ import { PDFReport } from "./pages/PDFReport";
 import { Confidence } from "./pages/Confidence";
 import { Voice } from "./pages/Voice";
 import { StoryIntelligence } from "./pages/StoryIntelligence";
+import SmartSetupPage from "./pages/SmartSetup";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: "confidence", Component: Confidence },
       { path: "voice", Component: Voice },
       { path: "story", Component: StoryIntelligence },
+      { path: "smart-setup", Component: SmartSetupPage },
     ],
   },
 ]);

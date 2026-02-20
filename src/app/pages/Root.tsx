@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useLocation } from "react-router";
-import { Home, Search, User, Sparkles, FileText, LogOut } from "lucide-react";
+import { Home, Search, User, Sparkles, FileText, LogOut, Mic, Film, Layers } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
@@ -17,7 +17,59 @@ export function Root() {
               <Sparkles className="w-6 h-6" />
               <span>ShopMind <span className="text-slate-900">AI</span></span>
             </NavLink>
-            <div className="flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-1">
+              <NavLink
+                to="/chat"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-indigo-100 text-indigo-700"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <Search className="w-4 h-4" />
+                AI Chat
+              </NavLink>
+              <NavLink
+                to="/voice"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-indigo-100 text-indigo-700"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <Mic className="w-4 h-4" />
+                Voice
+              </NavLink>
+              <NavLink
+                to="/story"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-indigo-100 text-indigo-700"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <Film className="w-4 h-4" />
+                Story
+              </NavLink>
+              <NavLink
+                to="/smart-setup"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-indigo-100 text-indigo-700"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <Layers className="w-4 h-4" />
+                Setup
+              </NavLink>
               <NavLink
                 to="/pdf-report"
                 className={({ isActive }) =>
@@ -31,10 +83,12 @@ export function Root() {
                 <FileText className="w-4 h-4" />
                 PDF Report
               </NavLink>
+            </div>
+            <div className="flex items-center gap-4">
               {isAuthenticated && (
                 <a
                   href="/api/logout"
-                  className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  className="hidden lg:flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   Logout
@@ -57,10 +111,11 @@ export function Root() {
       </main>
 
       {!isLanding && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white/90 backdrop-blur-xl border-t border-slate-200 px-8 py-3 pb-8">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white/90 backdrop-blur-xl border-t border-slate-200 px-4 py-3 pb-8">
           <div className="flex justify-between items-center max-w-md mx-auto">
             <NavIcon to="/dashboard" icon={<Home className="w-6 h-6" />} label="Home" />
             <NavIcon to="/chat" icon={<Search className="w-6 h-6" />} label="AI Chat" />
+            <NavIcon to="/voice" icon={<Mic className="w-6 h-6" />} label="Voice" />
             <NavIcon to="/pdf-report" icon={<FileText className="w-6 h-6" />} label="PDF" />
             <NavIcon to="/profile" icon={<User className="w-6 h-6" />} label="Account" />
           </div>

@@ -111,7 +111,7 @@ export function AR() {
       {/* Top Controls */}
       <div className="absolute top-24 left-6 right-6 flex items-center justify-between z-10">
         <Link 
-          to="/shop" 
+          to="/dashboard" 
           className="p-3 bg-black/40 backdrop-blur-xl text-white rounded-full hover:bg-black/60 transition-all border border-white/10 shadow-lg"
         >
           <X size={20} />
