@@ -32,9 +32,9 @@ export function Layout() {
         </Link>
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
+          <Link to="/dashboard" className="hover:text-primary transition-colors">Shop</Link>
           <Link to="/chat" className="hover:text-primary transition-colors">AI Assistant</Link>
-          <Link to="/ar" className="hover:text-primary transition-colors">AR Try-On</Link>
+          <Link to="/ar/1" className="hover:text-primary transition-colors">AR Try-On</Link>
           <Link to="/story" className="hover:text-primary transition-colors flex items-center gap-1.5">
             <Film size={14} /> Story
           </Link>
@@ -68,7 +68,7 @@ export function Layout() {
 
       {/* Mobile Bottom Bar */}
       <div className="md:hidden fixed bottom-10 left-6 right-6 z-50 px-4 py-4 bg-background/60 backdrop-blur-3xl border border-white/20 rounded-[32px] flex items-center justify-around shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)]">
-        <Link to="/shop" className={`p-3 rounded-2xl transition-all ${location.pathname === "/shop" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
+        <Link to="/dashboard" className={`p-3 rounded-2xl transition-all ${location.pathname === "/dashboard" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <ShoppingBag size={24} />
         </Link>
         <Link to="/chat" className={`p-3 rounded-2xl transition-all ${location.pathname === "/chat" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
@@ -77,7 +77,7 @@ export function Layout() {
         <Link to="/story" className={`p-3 rounded-2xl transition-all ${location.pathname === "/story" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <Film size={24} />
         </Link>
-        <Link to="/ar" className={`p-3 rounded-2xl transition-all ${location.pathname === "/ar" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
+        <Link to="/ar/1" className={`p-3 rounded-2xl transition-all ${location.pathname.startsWith("/ar") ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <Camera size={24} />
         </Link>
         <Link to="/voice" className={`p-3 rounded-2xl transition-all ${location.pathname === "/voice" ? "bg-indigo-600 text-white shadow-lg scale-110" : "text-muted-foreground"}`}>
