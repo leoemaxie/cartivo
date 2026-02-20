@@ -7,6 +7,7 @@ import { ARView } from "./pages/ARView";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Profile } from "./pages/Profile";
 import { PDFReport } from "./pages/PDFReport";
+import { Confidence } from "./pages/Confidence";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: "product/:id", Component: ProductDetail },
       { path: "profile", Component: Profile },
       { path: "pdf-report", Component: PDFReport },
+      { path: "confidence", Component: Confidence },
     ],
   },
 ]);
