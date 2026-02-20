@@ -6,7 +6,6 @@ import {
   ChartValueAxisItem,
   ChartLegend,
   ChartTooltip,
-  ChartSeries,
 } from '@progress/kendo-react-charts'
 import { CheckCircle, AlertTriangle, Leaf, Star, Shield, DollarSign } from 'lucide-react'
 import { PDFReportResult } from '../../../services/pdf/pdfReportService'

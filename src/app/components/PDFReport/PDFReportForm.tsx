@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'motion/react'
-import { NumericTextBox, Slider } from '@progress/kendo-react-inputs'
+import { NumericTextBox } from '@progress/kendo-react-inputs'
 import { MultiSelect, MultiSelectChangeEvent } from '@progress/kendo-react-dropdowns'
 import { Button } from '@progress/kendo-react-buttons'
 import { FileText, Zap, Leaf, Palette, DollarSign } from 'lucide-react'
@@ -119,10 +119,12 @@ export default function PDFReportForm({ categories, loading, onSubmit }: PDFRepo
         </label>
         <MultiSelect
           data={STYLE_OPTIONS}
-          value={stylePreferences}
+          // value={stylePreferences}
+          textField="text"
+          dataItemKey="value"
           onChange={(e: MultiSelectChangeEvent) => setStylePreferences(e.value as string[])}
           placeholder="Select styles…"
-          className="w-full"
+          className="h-12 w-12"
         />
       </div>
 

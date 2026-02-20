@@ -1,12 +1,44 @@
 import { useNavigate } from "react-router";
-import { Sparkles, ArrowRight, ShoppingBag, Mic, Camera } from "lucide-react";
+import { Sparkles, ArrowRight, ShoppingBag, Mic, Camera, LogIn, UserPlus } from "lucide-react";
 import { motion } from "motion/react";
 
 export function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-white via-indigo-50 to-purple-50 overflow-hidden flex flex-col items-center justify-center p-6 sm:p-12 lg:p-24">
+    <div className="relative min-h-screen bg-gradient-to-br from-white via-indigo-50 to-purple-50 overflow-hidden flex flex-col p-6 sm:p-12 lg:p-24">
+      {/* Header Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex items-center justify-between mb-20"
+      >
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
+          <img src="/logo.webp" alt="Cartivo Logo" className="w-8 h-8" />
+          <span className="text-lg font-bold text-slate-900">Cartivo</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/signin")}
+            className="flex items-center gap-2 px-6 py-2.5 text-slate-700 font-semibold hover:text-indigo-600 transition-colors"
+          >
+            <LogIn className="w-4 h-4" />
+            Sign In
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/signup")}
+            className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+          >
+            <UserPlus className="w-4 h-4" />
+            Sign Up
+          </motion.button>
+        </div>
+      </motion.div>
       {/* Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -33,7 +65,7 @@ export function Landing() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 flex flex-col items-center text-center max-w-2xl gap-8"
+        className="relative z-10 flex flex-col items-center text-center max-w-2xl gap-8 mx-auto"
       >
         {/* Animated AI Assistant Placeholder */}
         <div className="mb-2">
@@ -65,7 +97,7 @@ export function Landing() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/signup")}
             className="w-full sm:w-64 bg-slate-900 text-white px-8 py-5 rounded-3xl font-bold flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl transition-all"
           >
             <ShoppingBag className="w-5 h-5" />

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { Mic, Send, X, Camera, Sparkles, ShoppingBag } from "lucide-react";
+import { Mic, Send, X, Camera, Sparkles, ShoppingBag, CornerDownRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { AIOrb } from "../components/AIOrb";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";

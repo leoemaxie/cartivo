@@ -1,6 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import { Root } from "./pages/Root";
 import { Landing } from "./pages/Landing";
+import { SignIn } from "./pages/SignIn";
+import { SignUp } from "./pages/SignUp";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
+import { Terms } from "./pages/Terms";
+import { Privacy } from "./pages/Privacy";
 import { Dashboard } from "./pages/Dashboard";
 import { Chat } from "./pages/Chat";
 import { ARView } from "./pages/ARView";
@@ -16,6 +22,12 @@ export const router = createBrowserRouter([
     Component: Root,
     children: [
       { index: true, Component: Landing },
+      { path: "signin", Component: SignIn },
+      { path: "signup", Component: SignUp },
+      { path: "forgot-password", Component: ForgotPassword },
+      { path: "reset-password", Component: ResetPassword },
+      { path: "terms", Component: Terms },
+      { path: "privacy", Component: Privacy },
       { path: "dashboard", Component: Dashboard },
       { path: "chat", Component: Chat },
       { path: "ar/:id", Component: ARView },
