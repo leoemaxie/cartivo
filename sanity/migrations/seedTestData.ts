@@ -1,4 +1,5 @@
 import { createClient } from '@sanity/client'
+import "dotenv/config";
 
 /**
  * Test Data Seeding Script for Smart Setup Builder
@@ -14,8 +15,8 @@ import { createClient } from '@sanity/client'
  */
 
 const client = createClient({
-  projectId: process.env.VITE_SANITY_PROJECT_ID || 'YOUR_PROJECT_ID',
-  dataset: process.env.VITE_SANITY_DATASET || 'production',
+  projectId: process.env.SANITY_PROJECT_ID || 'project-id',
+  dataset: process.env.SANITY_DATASET || 'production',
   token: process.env.SANITY_TOKEN || '', // Set via environment or CLI prompt
   apiVersion: '2024-02-01',
 })
@@ -285,9 +286,9 @@ async function seedAttributes() {
     },
   }))
 
-  const result = await client.transaction(mutations).commit()
-  console.log(`✅ Created ${result.length} attributes`)
-  return result.map((a) => a._id)
+  const { results } = await client.transaction(mutations).commit()
+  console.log(`Created ${ATTRIBUTES.length} attributes`)
+  return results.map((a: any) => a._id)
 }
 
 async function seedBrands() {
@@ -304,16 +305,16 @@ async function seedBrands() {
     },
   }))
 
-  const result = await client.transaction(mutations).commit()
-  console.log(`✅ Created ${result.length} brands`)
-  return result.reduce((map, b) => {
-    map[b.name] = b._id
+  const { results } = await client.transaction(mutations).commit()
+  console.log(`Created ${results.length} brands`)
+  return results.reduce((map, b, index) => {
+    map[BRANDS[index].name] = b.id
     return map
   }, {} as Record<string, string>)
 }
 
 async function seedCategories() {
-  console.log('📂 Seeding categories...')
+  console.log('Seeding categories...')
 
   const mutations = CATEGORIES.map((cat) => ({
     create: {
@@ -325,10 +326,10 @@ async function seedCategories() {
     },
   }))
 
-  const result = await client.transaction(mutations).commit()
-  console.log(`✅ Created ${result.length} categories`)
-  return result.reduce((map, c) => {
-    map[c.title] = c._id
+  const { results } = await client.transaction(mutations).commit()
+  console.log(`Created ${results.length} categories`)
+  return results.reduce((map, c) => {
+    map[c.id] = c.id
     return map
   }, {} as Record<string, string>)
 }
@@ -337,7 +338,7 @@ async function seedProducts(
   brandMap: Record<string, string>,
   categoryMap: Record<string, string>
 ) {
-  console.log('🛍️  Seeding products...')
+  console.log('Seeding products...')
 
   const mutations = PRODUCTS.map((prod) => ({
     create: {
@@ -355,9 +356,9 @@ async function seedProducts(
     },
   }))
 
-  const result = await client.transaction(mutations).commit()
-  console.log(`✅ Created ${result.length} products`)
-  return result.map((p) => p._id)
+  const { results } = await client.transaction(mutations).commit()
+  console.log(`Created ${results.length} products`)
+  return results.map((p: any) => p.id)
 }
 
 // ============================================
@@ -368,7 +369,7 @@ async function seedRelationships(
   productIds: string[],
   productMap: Map<string, number>
 ) {
-  console.log('🔗 Setting up product relationships...')
+  console.log('Setting up product relationships...')
 
   // Example relationships (desk + chair compatibility)
   const relationships = [
