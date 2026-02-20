@@ -1,14 +1,15 @@
 import { Outlet, NavLink, useLocation } from "react-router";
-import { Home, Search, Heart, User, Sparkles, FileText } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { Home, Search, User, Sparkles, FileText, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 export function Root() {
   const location = useLocation();
   const isLanding = location.pathname === "/";
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col items-center">
-      {/* Top Navigation */}
       {!isLanding && (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
           <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -30,20 +31,31 @@ export function Root() {
                 <FileText className="w-4 h-4" />
                 PDF Report
               </NavLink>
+              {isAuthenticated && (
+                <a
+                  href="/api/logout"
+                  className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </a>
+              )}
               <NavLink to="/profile" className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-slate-100 flex items-center justify-center">
-                <User className="w-5 h-5 text-slate-500" />
+                {user?.profileImageUrl ? (
+                  <ImageWithFallback src={user.profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-5 h-5 text-slate-500" />
+                )}
               </NavLink>
             </div>
           </div>
         </nav>
       )}
 
-      {/* Main Content */}
       <main className={`w-full max-w-screen-xl flex-1 ${!isLanding ? "pt-16 pb-24 lg:pb-0" : ""}`}>
         <Outlet />
       </main>
 
-      {/* Bottom Navigation (Mobile) */}
       {!isLanding && (
         <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white/90 backdrop-blur-xl border-t border-slate-200 px-8 py-3 pb-8">
           <div className="flex justify-between items-center max-w-md mx-auto">

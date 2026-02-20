@@ -2,22 +2,29 @@ import { motion } from "motion/react";
 import { User, Heart, Clock, Settings, Bell, Mic, Shield, CreditCard, LogOut, ChevronRight, Package, Sparkles } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { NavLink } from "react-router";
+import { useAuth } from "@/hooks/use-auth";
 
-const SAVED_ITEMS = [
+const FALLBACK_SAVED_ITEMS = [
   { id: "1", name: "Modern Minimalist Sneakers", price: "$129.00", img: "https://images.unsplash.com/photo-1543175420-34298ee94d44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzbmVha2VyJTIwZGVzaWduZXIlMjBmb290d2VhciUyMG1pbmltYWxpc3QlMjB3aGl0ZSUyMHNob2UlMjBwcm9kdWN0JTIwcGhvdG9ncmFwaHklMjBzdHVkaW98ZW58MXx8fHwxNzcxNTQ4MzY4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
   { id: "4", name: "Designer Silk Scarf", price: "$89.00", img: "https://images.unsplash.com/photo-1621536531700-cb0d34d56699?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG9mJTIwc3R5bGlzaCUyMHlvdW5nJTIwd29tYW4lMjBpbiUyMHByZW1pdW0lMjBvdXRmaXQlMjBwcm9mZXNzaW9uYWwlMjBoaWdoJTIwZmFzaGlvbiUyMHBob3RvZ3JhcGh5fGVufDF8fHx8MTc3MTU0ODM2OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
 ];
 
 export function Profile() {
+  const { user } = useAuth();
+  const displayName = user?.firstName && user?.lastName
+    ? `${user.firstName} ${user.lastName}`
+    : user?.firstName || "Guest User";
+  const profileImage = user?.profileImageUrl || "https://images.unsplash.com/photo-1672773027671-514295f5ead3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwbWluaW1hbGlzdCUyMGZhc2hpb24lMjBtb2RlbCUyMHBvcnRyYWl0cyUyMHN0eWxpc2glMjBjbG90aGluZyUyMGxpZmVzdHlsZSUyMGx1eHVyeXxlbnwxfHx8fDE3NzE1NDgzNjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
+  const memberSince = user?.createdAt ? new Date(user.createdAt).getFullYear() : new Date().getFullYear();
+
   return (
     <div className="max-w-4xl mx-auto p-6 md:p-12 space-y-12">
-      {/* Profile Header */}
       <section className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
         <div className="relative">
           <div className="w-32 h-32 rounded-[40px] overflow-hidden border-4 border-white shadow-xl ring-2 ring-indigo-50">
              <ImageWithFallback 
-                src="https://images.unsplash.com/photo-1672773027671-514295f5ead3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwbWluaW1hbGlzdCUyMGZhc2hpb24lMjBtb2RlbCUyMHBvcnRyYWl0cyUyMHN0eWxpc2glMjBjbG90aGluZyUyMGxpZmVzdHlsZSUyMGx1eHVyeXxlbnwxfHx8fDE3NzE1NDgzNjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" 
-                alt="Sarah" 
+                src={profileImage} 
+                alt={displayName} 
                 className="w-full h-full object-cover" 
               />
           </div>
@@ -26,8 +33,10 @@ export function Profile() {
           </div>
         </div>
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Sarah Mitchell</h1>
-          <p className="text-slate-500 font-medium">Eco-Conscious Curator • Member since 2024</p>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{displayName}</h1>
+          <p className="text-slate-500 font-medium">
+            {user?.email || "Eco-Conscious Curator"} &bull; Member since {memberSince}
+          </p>
           <div className="flex justify-center md:justify-start gap-3 mt-4">
              <div className="bg-slate-100 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-2">
                 <Package className="w-4 h-4" /> 12 Orders
@@ -39,7 +48,6 @@ export function Profile() {
         </div>
       </section>
 
-      {/* Quick Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <StatCard icon={<Heart className="w-5 h-5 text-red-500" />} label="Wishlist" count="24" />
         <StatCard icon={<Clock className="w-5 h-5 text-indigo-500" />} label="History" count="86" />
@@ -47,16 +55,14 @@ export function Profile() {
         <StatCard icon={<CreditCard className="w-5 h-5 text-emerald-500" />} label="Credits" count="$14.50" />
       </div>
 
-      {/* Main Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Wishlist Preview */}
         <section className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-slate-900">Your Wishlist</h2>
             <button className="text-indigo-600 font-bold text-sm">View All</button>
           </div>
           <div className="space-y-4">
-            {SAVED_ITEMS.map((item) => (
+            {FALLBACK_SAVED_ITEMS.map((item) => (
               <NavLink to={`/product/${item.id}`} key={item.id} className="flex items-center gap-4 p-4 rounded-3xl bg-white border border-slate-100 hover:border-indigo-100 transition-all group">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-50 border border-slate-100 group-hover:scale-110 transition-transform">
                   <ImageWithFallback src={item.img} alt={item.name} className="w-full h-full object-cover" />
@@ -71,7 +77,6 @@ export function Profile() {
           </div>
         </section>
 
-        {/* Account Settings */}
         <section className="space-y-6">
           <h2 className="text-xl font-bold text-slate-900">Experience Preferences</h2>
           <div className="bg-white rounded-[40px] border border-slate-100 overflow-hidden shadow-sm">
@@ -79,7 +84,9 @@ export function Profile() {
              <SettingsItem icon={<Mic className="w-5 h-5" />} label="Voice Personality" value="Friendly" />
              <SettingsItem icon={<Sparkles className="w-5 h-5" />} label="AI Curations" toggle active />
              <SettingsItem icon={<Settings className="w-5 h-5" />} label="Account Settings" />
-             <SettingsItem icon={<LogOut className="w-5 h-5 text-red-400" />} label="Log Out" color="red" last />
+             <a href="/api/logout">
+               <SettingsItem icon={<LogOut className="w-5 h-5 text-red-400" />} label="Log Out" color="red" last />
+             </a>
           </div>
         </section>
       </div>

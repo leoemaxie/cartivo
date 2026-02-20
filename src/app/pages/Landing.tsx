@@ -1,13 +1,21 @@
 import { useNavigate } from "react-router";
-import { Sparkles, ArrowRight, ShoppingBag, Mic, Camera, LogIn, UserPlus } from "lucide-react";
+import { Sparkles, ArrowRight, ShoppingBag, Mic, Camera, LogIn } from "lucide-react";
 import { motion } from "motion/react";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
 
 export function Landing() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-white via-indigo-50 to-purple-50 overflow-hidden flex flex-col p-6 sm:p-12 lg:p-24">
-      {/* Header Navigation */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -19,46 +27,22 @@ export function Landing() {
           <span className="text-lg font-bold text-slate-900">Cartivo</span>
         </div>
         <div className="flex items-center gap-3">
-          <motion.button
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signin")}
-            className="flex items-center gap-2 px-6 py-2.5 text-slate-700 font-semibold hover:text-indigo-600 transition-colors"
+            href="/api/login"
+            className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
           >
             <LogIn className="w-4 h-4" />
             Sign In
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signup")}
-            className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
-          >
-            <UserPlus className="w-4 h-4" />
-            Sign Up
-          </motion.button>
+          </motion.a>
         </div>
       </motion.div>
-      {/* Background Orbs */}
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute top-20 left-10 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="absolute top-40 right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="absolute bottom-20 left-1/2 w-72 h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-        />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute top-20 left-10 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.2 }} className="absolute top-40 right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.4 }} className="absolute bottom-20 left-1/2 w-72 h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
       </div>
 
       <motion.div
@@ -67,7 +51,6 @@ export function Landing() {
         transition={{ duration: 0.8 }}
         className="relative z-10 flex flex-col items-center text-center max-w-2xl gap-8 mx-auto"
       >
-        {/* Animated AI Assistant Placeholder */}
         <div className="mb-2">
           <img src='/logo.webp' alt="Cartivo Logo" className="w-40 h-40 z-20" />
         </div>
@@ -94,16 +77,16 @@ export function Landing() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4">
-          <motion.button
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signup")}
+            href="/api/login"
             className="w-full sm:w-64 bg-slate-900 text-white px-8 py-5 rounded-3xl font-bold flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl transition-all"
           >
             <ShoppingBag className="w-5 h-5" />
             Start Shopping
             <ArrowRight className="w-5 h-5" />
-          </motion.button>
+          </motion.a>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
