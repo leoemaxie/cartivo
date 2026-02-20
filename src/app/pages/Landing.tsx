@@ -30,7 +30,7 @@ export function Landing() {
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href="/api/login"
+            href="/login"
             className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
           >
             <LogIn className="w-4 h-4" />
