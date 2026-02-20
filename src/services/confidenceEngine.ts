@@ -13,12 +13,20 @@ export interface ConfidenceInput {
   visualFitScore: number
   /** 0–100: budget alignment score (100 = fully within budget) */
   budgetScore: number
+  /**
+   * 0–100: real-time trend score from the You.com Evidence Aggregator.
+   * When provided the formula shifts to include trend signal; omit to
+   * preserve the original three-factor formula.
+   */
+  trendScore?: number
 }
 
 export interface ConfidenceResult {
   compatibilityScore: number
   visualFitScore: number
   budgetScore: number
+  /** Real-time trend score from You.com (present when Insight Agent ran) */
+  trendScore?: number
   /** Weighted aggregate: the Confidence Index™ */
   confidenceIndex: number
   /** One-sentence plain-language summary */
@@ -33,10 +41,18 @@ const WEIGHTS = {
   budget: 0.2,
 } as const
 
+/** Weights used when a real-time trend score is also available */
+const WEIGHTS_WITH_TREND = {
+  compatibility: 0.4,
+  visualFit: 0.3,
+  budget: 0.0,
+  trend: 0.3,
+} as const
+
 // ── Summary generator ────────────────────────────────────────────────────────
 
 function generateSummary(result: Omit<ConfidenceResult, 'explanationSummary'>): string {
-  const { compatibilityScore, visualFitScore, budgetScore, confidenceIndex } = result
+  const { compatibilityScore, visualFitScore, budgetScore, trendScore, confidenceIndex } = result
 
   const compatLabel =
     compatibilityScore >= 80 ? 'strong stylistic compatibility'
@@ -58,6 +74,18 @@ function generateSummary(result: Omit<ConfidenceResult, 'explanationSummary'>): 
     : confidenceIndex >= 60 ? 'a solid confidence score'
     : confidenceIndex >= 40 ? 'a moderate confidence score'
     : 'a low confidence score'
+
+  if (trendScore !== undefined) {
+    const trendLabel =
+      trendScore >= 80 ? 'highly trending in current fashion reports'
+      : trendScore >= 55 ? 'trending with moderate web presence'
+      : 'showing early trend signals'
+
+    return (
+      `This bundle achieves ${compatLabel}, ${visualLabel}, and is ${trendLabel} — ` +
+      `resulting in ${indexLabel} of ${confidenceIndex}/100.`
+    )
+  }
 
   return (
     `This bundle achieves ${compatLabel} and ${visualLabel}, with ${budgetLabel} — ` +
@@ -101,23 +129,38 @@ export function deriveCompatibilityScore(
 /**
  * Computes the final Confidence Index™.
  *
- * Formula:
+ * Formula (without trend):
  *   confidenceIndex = (compatibilityScore × 0.5)
  *                   + (visualFitScore     × 0.3)
  *                   + (budgetScore        × 0.2)
+ *
+ * Formula (with trend score from You.com Insight Agent):
+ *   confidenceIndex = (compatibilityScore × 0.4)
+ *                   + (visualFitScore     × 0.3)
+ *                   + (trendScore         × 0.3)
  */
 export function computeConfidenceIndex(input: ConfidenceInput): ConfidenceResult {
-  const raw =
-    input.compatibilityScore * WEIGHTS.compatibility +
-    input.visualFitScore * WEIGHTS.visualFit +
-    input.budgetScore * WEIGHTS.budget
+  let raw: number
+
+  if (input.trendScore !== undefined) {
+    raw =
+      input.compatibilityScore * WEIGHTS_WITH_TREND.compatibility +
+      input.visualFitScore     * WEIGHTS_WITH_TREND.visualFit +
+      input.trendScore         * WEIGHTS_WITH_TREND.trend
+  } else {
+    raw =
+      input.compatibilityScore * WEIGHTS.compatibility +
+      input.visualFitScore     * WEIGHTS.visualFit +
+      input.budgetScore        * WEIGHTS.budget
+  }
 
   const confidenceIndex = Math.round(Math.min(100, Math.max(0, raw)))
 
-  const partial = {
+  const partial: Omit<ConfidenceResult, 'explanationSummary'> = {
     compatibilityScore: Math.round(input.compatibilityScore),
     visualFitScore: Math.round(input.visualFitScore),
     budgetScore: Math.round(input.budgetScore),
+    trendScore: input.trendScore !== undefined ? Math.round(input.trendScore) : undefined,
     confidenceIndex,
   }
 
