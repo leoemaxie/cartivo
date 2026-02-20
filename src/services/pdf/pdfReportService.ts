@@ -13,7 +13,7 @@
  * instead, which the user can print to PDF via the browser.
  */
 
-import { buildSmartSetup, SetupConstraints, SetupBuilderResult } from '@/services/setupBuilder'
+import { buildSmartSetup, SetupConstraints, SetupBuilderResult } from '../../services/setupBuilder'
 import {
   generateBundlePDF,
   pollJobStatus,
@@ -21,13 +21,13 @@ import {
   BundleReportData,
   ProductReportData,
   FoxitDocGenResponse,
-} from '@/services/foxit/foxitDocGen'
+} from '../../services/foxit/foxitDocGen'
 import {
   enhancePDF,
   PDFAnnotation,
   PDFBookmark,
-} from '@/services/foxit/foxitPdfServices'
-import { SanityProduct } from '@/services/sanity/sanityService'
+} from '../../services/foxit/foxitPdfServices'
+import { SanityProduct } from '../../services/sanity/sanityService'
 
 // ============================================================
 // Types
@@ -113,15 +113,15 @@ function buildReportData(
 
   const avgSustainability =
     products.length > 0
-      ? products.reduce((s, p) => s + p.sustainabilityScore, 0) / products.length
+      ? products.reduce((s: any, p: { sustainabilityScore: any }) => s + p.sustainabilityScore, 0) / products.length
       : 0
   const avgDurability =
     products.length > 0
-      ? products.reduce((s, p) => s + (p.performanceMetrics?.durabilityScore ?? 0), 0) /
+      ? products.reduce((s: any, p: { performanceMetrics: { durabilityScore: any } }) => s + (p.performanceMetrics?.durabilityScore ?? 0), 0) /
         products.length
       : 0
 
-  const reportProducts: ProductReportData[] = products.map((p) => ({
+  const reportProducts: ProductReportData[] = products.map((p: SanityProduct) => ({
     id: p._id,
     name: p.name,
     brand: p.brand?.name ?? 'Unknown',
@@ -134,8 +134,8 @@ function buildReportData(
     warrantyYears: p.performanceMetrics?.warrantyYears ?? 0,
     styleTags: p.styleTags ?? [],
     description: p.description ?? '',
-    compatibleWith: (p.compatibility ?? []).map((c) => c.name ?? c._id),
-    requiredAccessories: (p.requiredAccessories ?? []).map((a) => ({
+    compatibleWith: (p.compatibility ?? []).map((c: { name: any; _id: any }) => c.name ?? c._id),
+    requiredAccessories: (p.requiredAccessories ?? []).map((a: { name: any; _id: any; price: any }) => ({
       name: a.name ?? a._id,
       price: a.price ?? 0,
     })),
@@ -165,7 +165,7 @@ function buildReportData(
       aiExplanation: explanation,
     },
     products: reportProducts,
-    replacements: replacementSuggestions.map((r) => ({
+    replacements: replacementSuggestions.map((r: { productName: any; currentPrice: any; alternativeName: any; alternativePrice: any; savings: any; reason: any }) => ({
       originalProductName: r.productName,
       originalPrice: r.currentPrice,
       alternativeName: r.alternativeName,

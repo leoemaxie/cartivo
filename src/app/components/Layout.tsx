@@ -1,6 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
 import { User, Search, ShoppingBag, Sparkles, MessageSquare, Camera } from "lucide-react";
-import { motion } from "motion/react";
 
 export function Layout() {
   const location = useLocation();

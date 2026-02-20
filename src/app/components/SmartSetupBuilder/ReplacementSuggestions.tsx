@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardBody } from '@progress/kendo-react-layout'
-import { ReplacementSuggestion } from '@/services/setupBuilder'
+import { ReplacementSuggestion } from '../../../services/setupBuilder'
 
 interface ReplacementSuggestionsProps {
   suggestions: ReplacementSuggestion[]

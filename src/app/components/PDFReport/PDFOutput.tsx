@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { Download, Share2, Printer, ExternalLink, QrCode, CheckCircle2, FileText } from 'lucide-react'
-import type { PDFReportResult } from '@/services/pdf/pdfReportService'
+import type { PDFReportResult } from '../../../services/pdf/pdfReportService'
 
 interface PDFOutputProps {
   result: PDFReportResult

@@ -1,7 +1,6 @@
-import React from 'react'
 import { motion } from 'motion/react'
 import { CheckCircle, Circle, Loader, AlertCircle } from 'lucide-react'
-import type { GenerationStep, GenerationProgress as ProgressData } from '@/services/pdf/pdfReportService'
+import type { GenerationStep, GenerationProgress as ProgressData } from '../../../services/pdf/pdfReportService'
 
 interface GenerationProgressProps {
   progress: ProgressData

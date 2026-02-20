@@ -1,19 +1,15 @@
-import React from 'react'
 import { motion } from 'motion/react'
 import {
-  RadialBarChart,
-  RadialBar,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Cell,
-  Legend,
-} from 'recharts'
+  Chart,
+  ChartSeriesItem,
+  ChartCategoryAxisItem,
+  ChartValueAxisItem,
+  ChartLegend,
+  ChartTooltip,
+  ChartSeries,
+} from '@progress/kendo-react-charts'
 import { CheckCircle, AlertTriangle, Leaf, Star, Shield, DollarSign } from 'lucide-react'
-import type { PDFReportResult } from '@/services/pdf/pdfReportService'
+import { PDFReportResult } from '../../../services/pdf/pdfReportService'
 
 interface BundlePreviewProps {
   result: PDFReportResult
@@ -115,52 +111,36 @@ export default function BundlePreview({ result }: BundlePreviewProps) {
         {/* Price breakdown */}
         <div className="bg-white border border-slate-200 rounded-xl p-4">
           <h4 className="text-sm font-semibold text-slate-700 mb-3">💰 Price Breakdown</h4>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={priceData} margin={{ top: 0, right: 0, bottom: 30, left: 0 }}>
-              <XAxis
-                dataKey="name"
-                tick={{ fontSize: 10 }}
-                interval={0}
-                angle={-35}
-                textAnchor="end"
-              />
-              <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${v}`} />
-              <Tooltip formatter={(v: number) => [`$${v.toFixed(2)}`, 'Price']} />
-              <Bar dataKey="price" radius={[4, 4, 0, 0]}>
-                {priceData.map((entry, i) => (
-                  <Cell key={i} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <Chart style={{ height: 180 }}>
+            <ChartCategoryAxisItem categories={priceData.map((p) => p.name)} />
+            <ChartValueAxisItem />
+            <ChartTooltip render={(props: any) => `$${props.value.toFixed(2)}`} />
+            <ChartLegend visible={false} />
+            <ChartSeriesItem
+              type="column"
+              data={priceData}
+              field="price"
+              colorField="fill"
+              tooltip={{ visible: true }}
+            />
+          </Chart>
         </div>
 
         {/* Scores radial */}
         <div className="bg-white border border-slate-200 rounded-xl p-4">
           <h4 className="text-sm font-semibold text-slate-700 mb-3">📊 Score Overview</h4>
-          <ResponsiveContainer width="100%" height={180}>
-            <RadialBarChart
-              innerRadius={30}
-              outerRadius={80}
+          <Chart style={{ height: 180 }}>
+            <ChartTooltip render={(props: any) => `${props.value}/100`} />
+            <ChartLegend visible={true} />
+            <ChartSeriesItem
+              type="donut"
               data={radialData}
-              startAngle={180}
-              endAngle={0}
-            >
-              <RadialBar
-                background
-                dataKey="value"
-                cornerRadius={6}
-                label={{ position: 'insideStart', fill: '#fff', fontSize: 10 }}
-              />
-              <Legend
-                iconSize={8}
-                layout="vertical"
-                verticalAlign="bottom"
-                formatter={(value) => <span style={{ fontSize: 11 }}>{value}</span>}
-              />
-              <Tooltip formatter={(v: number) => [`${v}/100`]} />
-            </RadialBarChart>
-          </ResponsiveContainer>
+              field="value"
+              categoryField="name"
+              colorField="fill"
+              tooltip={{ visible: true }}
+            />
+          </Chart>
         </div>
       </div>
 

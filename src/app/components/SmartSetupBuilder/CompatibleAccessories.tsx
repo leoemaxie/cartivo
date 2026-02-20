@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardBody } from '@progress/kendo-react-layout'
-import { SanityProduct } from '@/services/sanity/sanityService'
+import { SanityProduct } from '../../../services/sanity/sanityService'
 import ProductCard from './ProductCard'
 
 interface CompatibleAccessoriesProps {

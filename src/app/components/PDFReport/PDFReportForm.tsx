@@ -4,8 +4,8 @@ import { NumericTextBox, Slider } from '@progress/kendo-react-inputs'
 import { MultiSelect, MultiSelectChangeEvent } from '@progress/kendo-react-dropdowns'
 import { Button } from '@progress/kendo-react-buttons'
 import { FileText, Zap, Leaf, Palette, DollarSign } from 'lucide-react'
-import type { PDFReportRequest } from '@/services/pdf/pdfReportService'
-import type { SanityCategory } from '@/services/sanity/sanityService'
+import type { PDFReportRequest } from '../../../services/pdf/pdfReportService'
+import type { SanityCategory } from '../../../services/sanity/sanityService'
 
 interface PDFReportFormProps {
   categories: SanityCategory[]
