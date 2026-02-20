@@ -1,9 +1,10 @@
 import { motion } from "motion/react";
-import { Search, Filter, Sparkles, TrendingUp, Leaf, ArrowRight, Star, Heart } from "lucide-react";
+import { Search, Filter, Sparkles, TrendingUp, Leaf, ArrowRight, Star, Heart, ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { NavLink } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
+import { searchTrends, type SearchResult } from "../../services/youComAgent";
 
 const FALLBACK_PRODUCTS = [
   { id: 1, name: "Modern Minimalist Sneakers", price: "$129.00", rating: 4.8, category: "Recommended", img: "https://images.unsplash.com/photo-1543175420-34298ee94d44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzbmVha2VyJTIwZGVzaWduZXIlMjBmb290d2VhciUyMG1pbmltYWxpc3QlMjB3aGl0ZSUyMHNob2UlMjBwcm9kdWN0JTIwcGhvdG9ncmFwaHklMjBzdHVkaW98ZW58MXx8fHwxNzcxNTQ4MzY4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" },
@@ -28,6 +29,12 @@ export function Dashboard() {
       if (!res.ok) return null;
       return res.json();
     },
+  });
+
+  const { data: trendResults } = useQuery<SearchResult[]>({
+    queryKey: ["trends", "fashion"],
+    queryFn: () => searchTrends("fashion", "outfit"),
+    staleTime: 5 * 60 * 1000,
   });
 
   const products = dbProducts && dbProducts.length > 0 ? dbProducts : FALLBACK_PRODUCTS;
@@ -113,10 +120,14 @@ export function Dashboard() {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="h-64 rounded-[32px] bg-slate-200 animate-pulse" />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {trendResults && trendResults.length > 0
+            ? trendResults.slice(0, 3).map((trend, i) => (
+                <TrendCard key={i} trend={trend} index={i} />
+              ))
+            : [1, 2, 3].map((item) => (
+                <div key={item} className="h-64 rounded-[32px] bg-slate-200 animate-pulse" />
+              ))}
         </div>
       </section>
     </div>
@@ -164,5 +175,43 @@ function ProductCard({ product, index }: { product: any, index: number }) {
         </div>
       </NavLink>
     </motion.div>
+  );
+}
+
+function TrendCard({ trend, index }: { trend: SearchResult; index: number }) {
+  const reliabilityPct = Math.round(trend.reliability * 100);
+  return (
+    <motion.a
+      href={trend.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 * index }}
+      className="group flex flex-col justify-between h-64 rounded-[32px] bg-white border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-1 transition-all"
+    >
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-indigo-600 text-xs font-bold uppercase tracking-widest">
+          <TrendingUp className="w-3.5 h-3.5" />
+          <span>Trending</span>
+        </div>
+        <h3 className="font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-indigo-600 transition-colors">
+          {trend.title}
+        </h3>
+        <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">{trend.snippet}</p>
+      </div>
+      <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center gap-1.5">
+          <div className="h-1.5 w-16 rounded-full bg-slate-100 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-indigo-500"
+              style={{ width: `${reliabilityPct}%` }}
+            />
+          </div>
+          <span className="text-[10px] text-slate-400 font-semibold">{reliabilityPct}% reliable</span>
+        </div>
+        <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+      </div>
+    </motion.a>
   );
 }
