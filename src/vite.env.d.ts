@@ -1,12 +1,11 @@
-/// <reference types="vite/client" />
+// <reference types="vite/client" />
 
 interface ImportMetaEnv {
   // Deepgram Voice Agent
   readonly VITE_DEEPGRAM_API_KEY?: string
 
   // Sanity Configuration
-  readonly SANITY_PROJECT_ID?: string
-  readonly SANITY_DATASET?: string
+  readonly VITE_SANITY_PROJECT_ID?: string
   readonly VITE_SANITY_DATASET?: string
 
   // Foxit PDF APIs

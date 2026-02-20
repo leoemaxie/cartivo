@@ -18,8 +18,8 @@ import {
   deriveCompatibilityScore,
   deriveBudgetScore,
   type ConfidenceResult,
-} from '@/services/confidenceEngine'
-import type { CartivoItemMeta, CartivoBundleMeta } from '@/types/miro'
+} from '.././services/confidenceEngine'
+import type { CartivoItemMeta, CartivoBundleMeta } from '../types/miro'
 
 // ── Public types ─────────────────────────────────────────────────────────────
 

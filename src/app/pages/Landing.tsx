@@ -9,6 +9,7 @@ export function Landing() {
   return (
     <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center p-6 sm:p-12 lg:p-24">
       {/* Background Orbs */}
+      <img src='/logo.webp' alt="Cartivo Logo" />
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
         <div className="absolute top-[10%] left-[10%] w-[30vw] h-[30vw] bg-indigo-200 rounded-full blur-[100px]" />
         <div className="absolute bottom-[10%] right-[10%] w-[40vw] h-[40vw] bg-purple-200 rounded-full blur-[120px]" />

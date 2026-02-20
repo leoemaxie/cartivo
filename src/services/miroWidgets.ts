@@ -16,8 +16,8 @@
  */
 
 import type { Card, Frame, Image, StickyNote } from '@mirohq/websdk-types'
-import type { CartivoItemMeta, CartivoBundleMeta } from '@/types/miro'
-import type { RecomputedBundleItem, BundleRecomputeResponse } from '@/services/cartivoApi'
+import type { CartivoItemMeta, CartivoBundleMeta } from '../types/miro'
+import type { RecomputedBundleItem, BundleRecomputeResponse } from '../services/cartivoApi'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
