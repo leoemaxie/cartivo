@@ -15,6 +15,7 @@ import { Profile } from "./pages/Profile";
 import { PDFReport } from "./pages/PDFReport";
 import { Confidence } from "./pages/Confidence";
 import { Voice } from "./pages/Voice";
+import { StoryIntelligence } from "./pages/StoryIntelligence";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
       { path: "pdf-report", Component: PDFReport },
       { path: "confidence", Component: Confidence },
       { path: "voice", Component: Voice },
+      { path: "story", Component: StoryIntelligence },
     ],
   },
 ]);

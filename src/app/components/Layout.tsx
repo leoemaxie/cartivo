@@ -1,9 +1,22 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { User, Search, ShoppingBag, Sparkles, MessageSquare, Camera, Mic } from "lucide-react";
+import { User, Search, ShoppingBag, Sparkles, MessageSquare, Camera, Mic, Film } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getCart } from "../../services/cartStore";
 
 export function Layout() {
   const location = useLocation();
   const isLanding = location.pathname === "/";
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCart = () => {
+      const cart = getCart();
+      setCartCount(cart.items.reduce((sum, i) => sum + i.quantity, 0));
+    };
+    updateCart();
+    window.addEventListener("storage", updateCart);
+    return () => window.removeEventListener("storage", updateCart);
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-primary/10">
@@ -22,6 +35,9 @@ export function Layout() {
           <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
           <Link to="/chat" className="hover:text-primary transition-colors">AI Assistant</Link>
           <Link to="/ar" className="hover:text-primary transition-colors">AR Try-On</Link>
+          <Link to="/story" className="hover:text-primary transition-colors flex items-center gap-1.5">
+            <Film size={14} /> Story
+          </Link>
           <Link to="/voice" className="hover:text-primary transition-colors flex items-center gap-1.5 font-semibold text-indigo-600">
             <Mic size={14} /> Voice
           </Link>
@@ -36,7 +52,11 @@ export function Layout() {
           </Link>
           <button className="relative p-2 hover:bg-accent rounded-full transition-colors">
             <ShoppingBag size={20} />
-            <span className="absolute top-1 right-1 size-2 bg-primary rounded-full" />
+            {cartCount > 0 && (
+              <span className="absolute top-1 right-1 min-w-[16px] h-4 px-0.5 bg-primary rounded-full text-primary-foreground text-[9px] font-bold flex items-center justify-center">
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
           </button>
         </div>
       </nav>
@@ -53,6 +73,9 @@ export function Layout() {
         </Link>
         <Link to="/chat" className={`p-3 rounded-2xl transition-all ${location.pathname === "/chat" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <MessageSquare size={24} />
+        </Link>
+        <Link to="/story" className={`p-3 rounded-2xl transition-all ${location.pathname === "/story" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
+          <Film size={24} />
         </Link>
         <Link to="/ar" className={`p-3 rounded-2xl transition-all ${location.pathname === "/ar" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <Camera size={24} />

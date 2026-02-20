@@ -6,6 +6,7 @@
  *   2. Select a product from the current bundle
  *   3. Receive a Visual Fit Score, Compatibility Score, Budget Score
  *      and a final Confidence Index™ with an animated gauge
+ *   4. Push the scored bundle to a Miro board (when running inside Miro)
  *
  * Privacy: images are processed in memory only and never stored.
  */
@@ -21,6 +22,7 @@ import {
   Info,
   Loader2,
   ChevronDown,
+  Layout,
 } from 'lucide-react'
 
 import { generateTryOn, PerfectCorpError } from '../../../services/perfectCorpService'
@@ -33,6 +35,8 @@ import {
 } from '../../../services/confidenceEngine'
 import type { SetupBuilderResult } from '../../../services/setupBuilder'
 import type { SanityProduct } from '../../../services/sanity/sanityService'
+import { pushBundleToBoard } from '../../../services/miroWidgets'
+import type { BundleRecomputeResponse } from '../../../services/cartivoApi'
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
@@ -204,6 +208,7 @@ export function CartivoConfidence({ setupResult, products: propProducts, maxBudg
   const [selectedProductId, setSelectedProductId] = useState<string>('')
   const [scoreState, setScoreState] = useState<ScoreState | null>(null)
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [miroPushStatus, setMiroPushStatus] = useState<'idle' | 'pushing' | 'done' | 'error'>('idle')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
@@ -315,6 +320,45 @@ export function CartivoConfidence({ setupResult, products: propProducts, maxBudg
     setScoreState(null)
     setPhase('idle')
     setErrorMessage('')
+    setMiroPushStatus('idle')
+  }
+
+  const handleMiroPush = async () => {
+    if (!scoreState || !selectedProductId) return
+    const product = products.find((p) => p._id === selectedProductId)
+    if (!product) return
+
+    setMiroPushStatus('pushing')
+    try {
+      const bundleResponse: BundleRecomputeResponse = {
+        bundleId: `confidence_${Date.now()}`,
+        items: [
+          {
+            itemId: product._id,
+            name: product.name,
+            category: product.category?.title ?? 'fashion',
+            price: product.price,
+            imageUrl: product.image ?? product.images?.[0]?.asset?.url ?? '',
+            styleTags: product.styleTags ?? [],
+            sustainabilityScore: product.sustainabilityScore ?? 70,
+            compatibilityScore: scoreState.confidence.compatibilityScore,
+            confidenceIndex: scoreState.confidence.confidenceIndex,
+            visualFitScore: scoreState.confidence.visualFitScore,
+            budgetScore: scoreState.confidence.budgetScore,
+            explanationSummary: scoreState.confidence.explanationSummary,
+          },
+        ],
+        overallConfidence: scoreState.confidence.confidenceIndex,
+        totalCost: product.price,
+        remainingBudget: 0,
+        isCompatible: scoreState.confidence.compatibilityScore >= 60,
+        lastComputedAt: new Date().toISOString(),
+      }
+      await pushBundleToBoard(bundleResponse, { bundleName: product.name })
+      setMiroPushStatus('done')
+    } catch {
+      setMiroPushStatus('error')
+    }
   }
 
   // ── Render ──────────────────────────────────────────────────────────────────
@@ -523,6 +567,26 @@ export function CartivoConfidence({ setupResult, products: propProducts, maxBudg
               <span className="font-bold block mb-1">AI Summary</span>
               {scoreState.confidence.explanationSummary}
             </div>
+
+            {/* Push to Miro (only when Miro SDK is available) */}
+            {typeof window !== 'undefined' && (window as any).miro && (
+              <button
+                type="button"
+                onClick={handleMiroPush}
+                disabled={miroPushStatus === 'pushing' || miroPushStatus === 'done'}
+                className="w-full flex items-center justify-center gap-2 border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 disabled:opacity-60 disabled:cursor-not-allowed text-indigo-700 font-bold py-3 rounded-2xl transition-all text-sm"
+              >
+                {miroPushStatus === 'pushing' ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Pushing to Miro…</>
+                ) : miroPushStatus === 'done' ? (
+                  <><CheckCircle className="w-4 h-4 text-green-600" /> Pushed to Miro Board</>
+                ) : miroPushStatus === 'error' ? (
+                  <><AlertTriangle className="w-4 h-4 text-rose-500" /> Push failed — retry</>
+                ) : (
+                  <><Layout className="w-4 h-4" /> Push Bundle to Miro</>
+                )}
+              </button>
+            )}
 
             {/* Reset */}
             <button
