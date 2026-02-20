@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { FileText, Sparkles, RotateCcw } from 'lucide-react'
 import { PDFReportForm, GenerationProgress, BundlePreview, PDFOutput } from '../components/PDFReport'
