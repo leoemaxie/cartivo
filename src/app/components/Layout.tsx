@@ -1,6 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { User, Search, ShoppingBag, Sparkles, MessageSquare, Camera } from "lucide-react";
-import { motion } from "motion/react";
+import { User, Search, ShoppingBag, Sparkles, MessageSquare, Camera, Mic } from "lucide-react";
 
 export function Layout() {
   const location = useLocation();
@@ -23,6 +22,9 @@ export function Layout() {
           <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
           <Link to="/chat" className="hover:text-primary transition-colors">AI Assistant</Link>
           <Link to="/ar" className="hover:text-primary transition-colors">AR Try-On</Link>
+          <Link to="/voice" className="hover:text-primary transition-colors flex items-center gap-1.5 font-semibold text-indigo-600">
+            <Mic size={14} /> Voice
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -54,6 +56,9 @@ export function Layout() {
         </Link>
         <Link to="/ar" className={`p-3 rounded-2xl transition-all ${location.pathname === "/ar" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <Camera size={24} />
+        </Link>
+        <Link to="/voice" className={`p-3 rounded-2xl transition-all ${location.pathname === "/voice" ? "bg-indigo-600 text-white shadow-lg scale-110" : "text-muted-foreground"}`}>
+          <Mic size={24} />
         </Link>
         <Link to="/profile" className={`p-3 rounded-2xl transition-all ${location.pathname === "/profile" ? "bg-primary text-primary-foreground shadow-lg scale-110" : "text-muted-foreground"}`}>
           <User size={24} />

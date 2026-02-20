@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useLocation } from "react-router";
-import { Home, Search, Heart, User, Sparkles } from "lucide-react";
+import { Home, Search, Heart, User, Sparkles, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Root() {
@@ -17,6 +17,19 @@ export function Root() {
               <span>ShopMind <span className="text-slate-900">AI</span></span>
             </NavLink>
             <div className="flex items-center gap-4">
+              <NavLink
+                to="/pdf-report"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-indigo-100 text-indigo-700"
+                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <FileText className="w-4 h-4" />
+                PDF Report
+              </NavLink>
               <NavLink to="/profile" className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-slate-100 flex items-center justify-center">
                 <User className="w-5 h-5 text-slate-500" />
               </NavLink>
@@ -36,6 +49,7 @@ export function Root() {
           <div className="flex justify-between items-center max-w-md mx-auto">
             <NavIcon to="/dashboard" icon={<Home className="w-6 h-6" />} label="Home" />
             <NavIcon to="/chat" icon={<Search className="w-6 h-6" />} label="AI Chat" />
+            <NavIcon to="/pdf-report" icon={<FileText className="w-6 h-6" />} label="PDF" />
             <NavIcon to="/profile" icon={<User className="w-6 h-6" />} label="Account" />
           </div>
         </nav>
